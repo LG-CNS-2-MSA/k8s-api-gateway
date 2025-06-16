@@ -1,6 +1,6 @@
 package com.welab.k8s_api_gateway.config;
 
-import com.welab.k8s_api_gateway.security.exception.RestAccesssDeniedHandler;
+import com.welab.k8s_api_gateway.security.exception.RestAccessDeniedHandler;
 import com.welab.k8s_api_gateway.security.exception.RestAuthenticationEntryPoint;
 import com.welab.k8s_api_gateway.security.filter.JwtAuthenticationFilter;
 import com.welab.k8s_api_gateway.security.jwt.JwtTokenValidator;
@@ -24,7 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WebSecurityConfig {
     private final JwtTokenValidator jwtTokenValidator;
-    private final RestAccesssDeniedHandler accesssDeniedHandler;
+    private final RestAccessDeniedHandler accessDeniedHandler;
     private final RestAuthenticationEntryPoint authenticationEntryPoint;
 
     @Bean
@@ -48,7 +48,7 @@ public class WebSecurityConfig {
                 .exceptionHandling(exceptionConfig ->
                         exceptionConfig
                                 .authenticationEntryPoint(authenticationEntryPoint)
-                                .accessDeniedHandler(accesssDeniedHandler)
+                                .accessDeniedHandler(accessDeniedHandler)
                 )
                 .authorizeHttpRequests(registry -> registry
                         .requestMatchers("/api/user/v1/auuth/**").permitAll()
