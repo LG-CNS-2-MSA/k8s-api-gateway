@@ -7,6 +7,7 @@ import com.welab.k8s_api_gateway.common.exception.NotFound;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -21,8 +22,8 @@ public class ApiCommonAdvice {
     @ExceptionHandler({BadParameter.class})
     public ApiResponseDto<String> handleBadParameter(BadParameter e) {
         return ApiResponseDto.createError(
-          e.getErrorCode(),
-          e.getErrorMessage()
+                e.getErrorCode(),
+                e.getErrorMessage()
         );
     }
 
@@ -43,8 +44,8 @@ public class ApiCommonAdvice {
     @ExceptionHandler({ClientError.class})
     public ApiResponseDto<String> handleClientError(ClientError e) {
         return ApiResponseDto.createError(
-          e.getErrorCode(),
-          e.getErrorMessage()
+                e.getErrorCode(),
+                e.getErrorMessage()
         );
     }
 
@@ -53,9 +54,18 @@ public class ApiCommonAdvice {
     @ExceptionHandler({NoResourceFoundException.class})
     public ApiResponseDto<String> handleNoResourceFoundException(NoResourceFoundException e) {
         return ApiResponseDto.createError(
-          "NoResource",
-          "잘못된 URL입니다."
+                "NoResource",
+                "잘못된 URL입니다."
         );
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler({InsufficientAuthenticationException.class})
+    public ApiResponseDto<String> handleInsufficientAuthenticationException(
+            InsufficientAuthenticationException e) {
+        return ApiResponseDto.createError(
+                "Unauthenticated",
+                "인증되지 않았습니다.");
     }
 
     // 모든 에러에 대해 500번 에러 처리 (공통 형식인 ApiResponseDto으로 반환)
@@ -63,8 +73,8 @@ public class ApiCommonAdvice {
     @ExceptionHandler({Exception.class})
     public ApiResponseDto<String> handlerException(Exception e) {
         return ApiResponseDto.createError(
-            "ServerError",
-            e.getMessage()
+                "ServerError",
+                e.getMessage()
         );
     }
 }
