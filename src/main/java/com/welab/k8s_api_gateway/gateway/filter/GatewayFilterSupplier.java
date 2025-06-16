@@ -6,6 +6,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class GatewayFilterSupplier extends SimpleFilterSupplier {
     public GatewayFilterSupplier() {
-        super(GatewayFilterSupplier.class);
+        super(GatewayFilterFunctions.class);
     }
 }
